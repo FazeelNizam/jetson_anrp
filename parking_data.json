@@ -1,0 +1,29 @@
+{
+    "park_name": "SLT HQ Car Park",
+    "capacity": 100,
+    "passes": [
+        {
+            "name": "A Pass",
+            "available": 20,
+            "limit": 40
+        },
+        {
+            "name": "B Pass",
+            "available": 18,
+            "limit": 20
+        },
+        {
+            "name": "C Pass",
+            "available": 15,
+            "limit": 20
+        },
+        {
+            "name": "D Pass",
+            "available": 8,
+            "limit": 15
+        }
+    ],
+    "visitors": {
+        "count": 5
+    }
+}

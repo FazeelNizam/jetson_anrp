@@ -193,4 +193,36 @@ sudo apt-get update
 sudo apt-get -y install cuda-toolkit-13-1
 
 
+ultralitics library should be run on a docker image in jetpack 4.x (jetson nono and tx2 nano)
+t=ultralytics/ultralytics:latest-jetson-jetpack4
+sudo docker pull $t && sudo docker run -it --ipc=host --runtime=nvidia $t
 
+
+The above Docker command will fail to open the video window (cv2.imshow) because it blocks the container from accessing your monitor (X11 server).
+
+You must use this updated command to allow the GUI window to appear:
+
+# 1. Allow display access (Run this once on host)
+xhost +
+
+# 2. Define Image
+t=ultralytics/ultralytics:latest-jetson-jetpack4
+
+# 3. Run Container
+# -w sets the working directory so you are immediately in your project folder -v "$PWD":/usr/src/app so that the folder you are currently in is mounted inside the container. This makes it easier to edit your python script on the host and run it inside the container.
+sudo docker run -it --ipc=host --runtime=nvidia --net=host \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v "$PWD":/home/fazeel/Desktop/jetson_anpr \
+    -w /home/fazeel/Desktop/jetson_anpr \
+    $t
+
+
+sudo docker ps
+sudo docker stop <CONTAINER_ID>
+sudo docker rm <CONTAINER_ID>
+
+Command Line screen record on jetson nano
+ximagesrc + ffmpeg
+Install: sudo apt install ffmpeg
+Command example: ffmpeg -f x11grab -s 1280x720 -r 30 -i :0.0 -c:v libx264 -preset veryfast output.mp4
